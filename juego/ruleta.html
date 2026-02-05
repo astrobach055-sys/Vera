@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ruleta Sí o No</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    text-align: center;
+    padding-top: 40px;
+}
+.contenedor {
+    position: relative;
+    width: 260px;
+    margin: 0 auto;
+}
+/* Ruleta con dos colores */
+.ruleta {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 8px solid #333;
+    background: conic-gradient(
+        #4CAF50 0deg 180deg,  /* Verde = Sí */
+        #F44336 180deg 360deg  /* Rojo = No */
+    );
+    transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+/* Aguja apuntando hacia arriba */
+.aguja {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #333; /* punta hacia arriba */
+    z-index: 10;
+}
+button {
+    margin-top: 30px;
+    padding: 15px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+button:hover {
+    background-color: #555;
+}
+.resultado {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>🎡 Ruleta del Sí o No</h1>
+
+<div class="contenedor">
+    <div id="ruleta" class="ruleta"></div>
+    <div class="aguja"></div>
+</div>
+
+<button onclick="girar()">Haz una pregunta y gira la ruleta</button>
+
+<div id="resultado" class="resultado"></div>
+
+<script>
+let rotacionActual = 0;
+
+function girar() {
+    const ruleta = document.getElementById("ruleta");
+    const resultadoTexto = document.getElementById("resultado");
+
+    // Ángulo aleatorio entre 0 y 360
+    const anguloAleatorio = Math.random() * 360;
+
+    // Varias vueltas completas para la animación
+    const vueltas = 5 * 360;
+
+    rotacionActual += vueltas + anguloAleatorio;
+
+    ruleta.style.transform = `rotate(${rotacionActual}deg)`;
+
+    resultadoTexto.textContent = "Girando...";
+
+    setTimeout(() => {
+        // Calculamos el ángulo que apunta hacia la aguja (arriba)
+        const anguloFinal = (360 - (rotacionActual % 360)) % 360;
+
+        // Verde = 0-180 → Sí, Rojo = 180-360 → No
+        const respuesta = (anguloFinal < 180) ? "Sí" : "No";
+
+        resultadoTexto.textContent = "La respuesta es: " + respuesta;
+    }, 3000); // coincide con la duración de la animación
+}
+</script>
+
+</body>
+</html>
+
+
+
+
